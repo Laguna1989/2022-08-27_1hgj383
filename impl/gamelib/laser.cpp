@@ -10,7 +10,7 @@ Laser::Laser(jt::Vector2f const& pos, jt::Vector2f const& velocity)
 void Laser::doCreate()
 {
     m_glow = std::make_shared<jt::Sprite>("#g#32#150", textureManager());
-    m_glow->setOrigin(jt::OriginMode::CENTER);
+
     m_glow->setColor(GP::getPalette().getColor(7));
     m_shape = std::make_shared<jt::Shape>();
     if (m_velocity.x == 0) {
@@ -18,9 +18,24 @@ void Laser::doCreate()
 
         m_glow->setScale(jt::Vector2f { 0.3f, 1.0f });
 
+#if JT_ENABLE_WEB
+        m_glow->setOrigin(jt::OriginMode::CENTER);
+        m_glow->setOffset(jt::Vector2f { 13, 1 });
+#else
+        m_glow->setOrigin(jt::OriginMode::CENTER);
+
+#endif
+
     } else {
         m_shape->makeRect(jt::Vector2f { 16, 2 }, textureManager());
         m_glow->setScale(jt::Vector2f { 1.0f, 0.3f });
+#if JT_ENABLE_WEB
+        m_glow->setOrigin(jt::OriginMode::CENTER);
+        m_glow->setOffset(jt::Vector2f { 1, 13 });
+#else
+        m_glow->setOrigin(jt::OriginMode::CENTER);
+
+#endif
     }
     m_shape->setOffset(jt::OffsetMode::CENTER);
     m_shape->setPosition(m_initialPos);
