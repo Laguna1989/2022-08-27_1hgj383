@@ -10,6 +10,8 @@ public:
     Laser(jt::Vector2f const& pos, jt::Vector2f const& velocity);
     std::shared_ptr<jt::Shape> m_shape;
 
+    std::vector<jt::Vector2f> getCollisionPoints() const;
+
 private:
     jt::Vector2f m_velocity { 0.0f, 0.0f };
     jt::Vector2f m_initialPos { 0.0f, 0.0f };

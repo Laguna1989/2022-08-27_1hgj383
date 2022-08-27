@@ -44,6 +44,7 @@ private:
 
     void endGame();
     void spawnLaser();
+    void checkLaserPlayerCollision();
 };
 
 #endif

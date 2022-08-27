@@ -1,4 +1,5 @@
 ﻿#include "state_game.hpp"
+#include "math_helper.hpp"
 #include <box2dwrapper/box2d_world_impl.hpp>
 #include <color/color.hpp>
 #include <game_interface.hpp>
@@ -49,6 +50,8 @@ void StateGame::doInternalUpdate(float const elapsed)
         if (getGame()->input().keyboard()->justPressed(jt::KeyCode::A)) {
             spawnLaser();
         }
+
+        checkLaserPlayerCollision();
     }
 
     m_background->update(elapsed);
@@ -81,4 +84,21 @@ void StateGame::spawnLaser()
     auto l = std::make_shared<Laser>(jt::Vector2f { 300.0f, 0 }, jt::Vector2f { 0, 100.0f });
     add(l);
     m_lasers->push_back(l);
+}
+
+void StateGame::checkLaserPlayerCollision()
+{
+
+    for (auto const& laser : *m_lasers) {
+        auto const l = laser.lock();
+
+        auto const pp = m_player->m_shape->getPosition();
+
+        for (auto const& lp : l->getCollisionPoints()) {
+            auto const diff = lp - pp;
+            if (jt::MathHelper::length(diff) < 16.0f) {
+                l->kill();
+            }
+        }
+    }
 }
