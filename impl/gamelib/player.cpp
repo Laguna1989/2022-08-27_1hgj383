@@ -8,6 +8,7 @@ void Player::doCreate()
     m_shape->makeCircle(16, textureManager());
     m_shape->setOffset(jt::OffsetMode::CENTER);
     m_shape->setPosition(0.5f * GP::GetScreenSize());
+    m_shape->setColor(GP::getPalette().getColor(6));
 }
 void Player::doUpdate(float const elapsed)
 {
@@ -47,6 +48,15 @@ void Player::doUpdate(float const elapsed)
     }
 
     m_shape->setPosition(pos);
+
+    m_hurtTimer -= elapsed;
 }
 
 void Player::doDraw() const { m_shape->draw(renderTarget()); }
+bool Player::canBeHurt() const { return m_hurtTimer <= 0; }
+void Player::hurt()
+{
+    m_hurtTimer = 0.75f;
+    m_shape->flash(0.5f, GP::getPalette().getColor(3));
+    m_shape->flicker(0.5f);
+}

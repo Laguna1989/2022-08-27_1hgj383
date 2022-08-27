@@ -1,6 +1,7 @@
 #ifndef INC_1HGJ383_CANNON_HPP
 #define INC_1HGJ383_CANNON_HPP
 
+#include "sprite.hpp"
 #include <game_object.hpp>
 #include <shape.hpp>
 #include <functional>

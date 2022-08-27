@@ -9,15 +9,22 @@ Laser::Laser(jt::Vector2f const& pos, jt::Vector2f const& velocity)
 
 void Laser::doCreate()
 {
+    m_glow = std::make_shared<jt::Sprite>("#g#32#150", textureManager());
+    m_glow->setOrigin(jt::OriginMode::CENTER);
+    m_glow->setColor(GP::getPalette().getColor(7));
     m_shape = std::make_shared<jt::Shape>();
     if (m_velocity.x == 0) {
         m_shape->makeRect(jt::Vector2f { 2, 16 }, textureManager());
 
+        m_glow->setScale(jt::Vector2f { 0.3f, 1.0f });
+
     } else {
         m_shape->makeRect(jt::Vector2f { 16, 2 }, textureManager());
+        m_glow->setScale(jt::Vector2f { 1.0f, 0.3f });
     }
     m_shape->setOffset(jt::OffsetMode::CENTER);
     m_shape->setPosition(m_initialPos);
+    m_shape->setColor(GP::getPalette().getColor(7));
 }
 void Laser::doUpdate(float const elapsed)
 {
@@ -34,9 +41,16 @@ void Laser::doUpdate(float const elapsed)
     if (pos.y < -32.0f || pos.y >= GP::GetScreenSize().y + 32.0f) {
         kill();
     }
+
+    m_glow->setPosition(pos);
+    m_glow->update(elapsed);
 }
 
-void Laser::doDraw() const { m_shape->draw(renderTarget()); }
+void Laser::doDraw() const
+{
+    m_shape->draw(renderTarget());
+    m_glow->draw(renderTarget());
+}
 
 std::vector<jt::Vector2f> Laser::getCollisionPoints() const
 {

@@ -36,6 +36,8 @@ void Cannon::doCreate()
             jt::Random::getFloat(margin, GP::GetScreenSize().y - margin) });
     }
 
+    m_shape->setColor(GP::getPalette().getColor(3));
+
     m_rand1 = jt::Random::getFloat(0.9f, 1.1f);
     m_rand2 = jt::Random::getFloat(0.1f, 5.0f);
 }
@@ -45,15 +47,19 @@ void Cannon::doUpdate(float const elapsed)
     m_shape->update(elapsed);
     m_shotTimer -= elapsed;
 
+    auto pos = m_shape->getPosition();
+
+    auto moveDir = jt::MathHelper::rotateBy(m_shotVelocity, 90.0f);
+    auto offset = sin(getAge() * 1.5f * m_rand1 + m_rand2) * 0.17f * moveDir * elapsed;
+
     float const shotPreFlickerTimer = 1.0f;
     if (m_shotTimer <= shotPreFlickerTimer && m_shotTimer + elapsed >= shotPreFlickerTimer) {
         m_shape->flicker(shotPreFlickerTimer);
     }
+    if (m_shotTimer <= shotPreFlickerTimer) {
+        offset = jt::Vector2f { 0.0f, 0.0f };
+    }
 
-    auto pos = m_shape->getPosition();
-
-    auto moveDir = jt::MathHelper::rotateBy(m_shotVelocity, 90.0f);
-    auto const offset = sin(getAge() * 1.5f * m_rand1 + m_rand2) * 0.17f * moveDir * elapsed;
     auto newPos = pos + offset;
     float const margin { 10.0f };
 

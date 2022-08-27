@@ -107,18 +107,21 @@ void StateGame::spawnLaser(jt::Vector2f const& pos, jt::Vector2f const& velocity
 
 void StateGame::checkLaserPlayerCollision()
 {
-
     for (auto const& laser : *m_lasers) {
         auto const l = laser.lock();
 
         auto const pp = m_player->m_shape->getPosition();
 
         for (auto const& lp : l->getCollisionPoints()) {
+            if (!m_player->canBeHurt()) {
+                continue;
+            }
             auto const diff = lp - pp;
             if (jt::MathHelper::length(diff) < 16.0f) {
                 l->kill();
                 m_lives--;
                 m_hud->getObserverScoreP1()->notify(m_lives);
+                m_player->hurt();
                 if (m_lives <= 0) {
                     endGame();
                 }
