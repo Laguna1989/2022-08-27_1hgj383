@@ -26,7 +26,8 @@ void StateGame::doInternalCreate()
     m_background->setIgnoreCamMovement(true);
     m_background->update(0.0f);
 
-    createPlayer();
+    m_player = std::make_shared<Player>();
+    add(m_player);
 
     m_vignette = std::make_shared<jt::Vignette>(GP::GetScreenSize());
     add(m_vignette);
@@ -35,14 +36,6 @@ void StateGame::doInternalCreate()
 
     // StateGame will call drawObjects itself.
     setAutoDraw(false);
-}
-
-void StateGame::createPlayer()
-{
-    b2BodyDef def;
-    def.type = b2BodyType::b2_dynamicBody;
-    m_player = std::make_shared<Player>(m_world, &def, *this);
-    add(m_player);
 }
 
 void StateGame::doInternalUpdate(float const elapsed)
