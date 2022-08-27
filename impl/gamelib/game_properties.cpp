@@ -3,17 +3,17 @@
 jt::Palette GP::getPalette()
 {
     static auto const p = jt::Palette::parseGPL(R"(GIMP Palette
-#Palette Name: Dreamscape8
-#Description: A palette made of low saturation colours to give your art a dreamlike quality. 
+#Palette Name: moondrom
+#Description: inspired by andylittle's palette https://www.deviantart.com/andylittle
 #Colors: 8
-201	204	161	c9cca1
-202	160	90	caa05a
-174	106	71	ae6a47
-139	64	73	8b4049
-84	51	68	543344
-81	82	98	515262
-99	120	125	63787d
-142	160	145	8ea091
+42	36	43	2a242b
+70	64	64	464040
+119	91	91	775b5b
+204	112	72	cc7048
+215	181	80	d7b550
+104	168	171	68a8ab
+144	213	156	90d59c
+255	255	178	ffffb2
 )");
     return p;
 }
