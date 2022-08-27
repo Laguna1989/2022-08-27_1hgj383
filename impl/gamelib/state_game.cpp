@@ -33,10 +33,7 @@ void StateGame::doInternalCreate()
     m_cannons = std::make_shared<jt::ObjectGroup<Cannon>>();
     add(m_cannons);
 
-    auto cannon = std::make_shared<Cannon>();
-    cannon->setShotCallback([this](auto const& p, auto const& v) { spawnLaser(p, v); });
-    m_cannons->push_back(cannon);
-    add(cannon);
+    spawnCannon();
 
     m_lasers = std::make_shared<jt::ObjectGroup<Laser>>();
     add(m_lasers);
@@ -46,8 +43,17 @@ void StateGame::doInternalCreate()
     m_hud = std::make_shared<Hud>();
     add(m_hud);
 
+    m_hud->getObserverScoreP1()->notify(m_lives);
+
     // StateGame will call drawObjects itself.
     setAutoDraw(false);
+}
+void StateGame::spawnCannon()
+{
+    auto cannon = std::make_shared<Cannon>();
+    cannon->setShotCallback([this](auto const& p, auto const& v) { spawnLaser(p, v); });
+    m_cannons->push_back(cannon);
+    add(cannon);
 }
 
 void StateGame::doInternalUpdate(float const elapsed)
@@ -55,10 +61,15 @@ void StateGame::doInternalUpdate(float const elapsed)
     if (m_running) {
         m_world->step(elapsed, GP::PhysicVelocityIterations(), GP::PhysicPositionIterations());
         // update game logic here
-        if (getGame()->input().keyboard()->justPressed(jt::KeyCode::A)) {
-            spawnLaser(jt::Vector2f { 300.0f, 0.0f }, jt::Vector2f { 0, 100.0f });
+
+        m_cannonSpawnTimer -= elapsed;
+        if (m_cannonSpawnTimer <= 0.0f) {
+            spawnCannon();
+            m_cannonSpawnTimer = GP::CannonSpawnInterval();
         }
 
+        m_timer += elapsed;
+        m_hud->getObserverScoreP2()->notify(static_cast<int>(m_timer));
         checkLaserPlayerCollision();
     }
 
@@ -106,6 +117,11 @@ void StateGame::checkLaserPlayerCollision()
             auto const diff = lp - pp;
             if (jt::MathHelper::length(diff) < 16.0f) {
                 l->kill();
+                m_lives--;
+                m_hud->getObserverScoreP1()->notify(m_lives);
+                if (m_lives <= 0) {
+                    endGame();
+                }
             }
         }
     }

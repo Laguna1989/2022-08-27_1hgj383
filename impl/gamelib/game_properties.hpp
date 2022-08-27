@@ -30,6 +30,8 @@ public:
     static int PhysicPositionIterations();
     static jt::Vector2f PlayerSize();
     static float const ShotVelocity() { return 150.0f; };
+    static float CannonFireTimer();
+    static float CannonSpawnInterval();
 };
 
 #endif

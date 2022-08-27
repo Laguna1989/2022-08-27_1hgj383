@@ -1,6 +1,7 @@
 ﻿#include "hud.hpp"
 #include <color/color.hpp>
 #include <game_interface.hpp>
+#include <game_properties.hpp>
 #include <hud/score_display.hpp>
 
 std::shared_ptr<ObserverInterface<int>> Hud::getObserverScoreP1() const { return m_scoreP1Display; }
@@ -15,16 +16,16 @@ void Hud::doCreate()
     m_scoreP1Text->setTextAlign(jt::Text::TextAlign::LEFT);
     m_scoreP1Text->setPosition({ 10, 4 });
 
-    m_scoreP1Display = std::make_shared<ScoreDisplay>(m_scoreP1Text, "P1 Score: ");
+    m_scoreP1Display = std::make_shared<ScoreDisplay>(m_scoreP1Text, "Lives: ");
 
     m_scoreP2Text = std::make_shared<jt::Text>();
     m_scoreP2Text->loadFont("assets/font.ttf", 16, renderTarget());
     m_scoreP2Text->setColor(jt::Color { 248, 249, 254 });
     m_scoreP2Text->update(0.0f);
-    m_scoreP2Text->setTextAlign(jt::Text::TextAlign::LEFT);
-    m_scoreP2Text->setPosition({ 600 / 2 - 10, 4 });
+    m_scoreP2Text->setTextAlign(jt::Text::TextAlign::RIGHT);
+    m_scoreP2Text->setPosition({ GP::GetScreenSize().x - 10.0f, 4 });
 
-    m_scoreP2Display = std::make_shared<ScoreDisplay>(m_scoreP2Text, "P2 Score: ");
+    m_scoreP2Display = std::make_shared<ScoreDisplay>(m_scoreP2Text, "Timer: ");
 }
 
 void Hud::doUpdate(float const elapsed)

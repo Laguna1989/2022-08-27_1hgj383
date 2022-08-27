@@ -37,8 +37,10 @@ private:
     bool m_running { true };
     bool m_hasEnded { false };
 
-    int m_scoreP1 { 0 };
-    int m_scoreP2 { 0 };
+    int m_lives { 3 };
+    float m_timer { 0.0f };
+
+    float m_cannonSpawnTimer { 0.0f };
 
     void doInternalCreate() override;
     void doInternalUpdate(float const elapsed) override;
@@ -47,6 +49,7 @@ private:
     void endGame();
     void spawnLaser(jt::Vector2f const& pos, jt::Vector2f const& velocity);
     void checkLaserPlayerCollision();
+    void spawnCannon();
 };
 
 #endif

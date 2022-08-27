@@ -17,7 +17,7 @@ private:
 
     std::function<void(jt::Vector2f const&, jt::Vector2f const&)> m_shotCallback { nullptr };
 
-    float m_shotTimer { 5.0f };
+    float m_shotTimer { 3.0f };
 
     void doCreate() override;
     void doUpdate(float const elapsed) override;

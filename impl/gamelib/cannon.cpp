@@ -47,7 +47,7 @@ void Cannon::doUpdate(float const elapsed)
     }
 
     if (m_shotTimer <= 0.0f) {
-        m_shotTimer = 5.0f;
+        m_shotTimer = GP::CannonFireTimer();
         if (m_shotCallback) {
             m_shotCallback(m_shape->getPosition(), m_shotVelocity);
         }
