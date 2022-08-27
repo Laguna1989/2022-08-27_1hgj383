@@ -30,6 +30,14 @@ void StateGame::doInternalCreate()
     m_player = std::make_shared<Player>();
     add(m_player);
 
+    m_cannons = std::make_shared<jt::ObjectGroup<Cannon>>();
+    add(m_cannons);
+
+    auto cannon = std::make_shared<Cannon>();
+    cannon->setShotCallback([this](auto const& p, auto const& v) { spawnLaser(p, v); });
+    m_cannons->push_back(cannon);
+    add(cannon);
+
     m_lasers = std::make_shared<jt::ObjectGroup<Laser>>();
     add(m_lasers);
 
@@ -48,7 +56,7 @@ void StateGame::doInternalUpdate(float const elapsed)
         m_world->step(elapsed, GP::PhysicVelocityIterations(), GP::PhysicPositionIterations());
         // update game logic here
         if (getGame()->input().keyboard()->justPressed(jt::KeyCode::A)) {
-            spawnLaser();
+            spawnLaser(jt::Vector2f { 300.0f, 0.0f }, jt::Vector2f { 0, 100.0f });
         }
 
         checkLaserPlayerCollision();
@@ -79,9 +87,9 @@ void StateGame::endGame()
 }
 std::string StateGame::getName() const { return "Game"; }
 
-void StateGame::spawnLaser()
+void StateGame::spawnLaser(jt::Vector2f const& pos, jt::Vector2f const& velocity)
 {
-    auto l = std::make_shared<Laser>(jt::Vector2f { 300.0f, 0 }, jt::Vector2f { 0, 100.0f });
+    auto l = std::make_shared<Laser>(pos, velocity);
     add(l);
     m_lasers->push_back(l);
 }

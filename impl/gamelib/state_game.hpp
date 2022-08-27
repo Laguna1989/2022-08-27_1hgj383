@@ -1,6 +1,7 @@
 ﻿#ifndef GAME_STATE_GAME_HPP
 #define GAME_STATE_GAME_HPP
 
+#include "cannon.hpp"
 #include <box2dwrapper/box2d_world_interface.hpp>
 #include <game_state.hpp>
 #include <laser.hpp>
@@ -31,6 +32,7 @@ private:
     std::shared_ptr<Player> m_player;
 
     std::shared_ptr<jt::ObjectGroup<Laser>> m_lasers;
+    std::shared_ptr<jt::ObjectGroup<Cannon>> m_cannons;
 
     bool m_running { true };
     bool m_hasEnded { false };
@@ -43,7 +45,7 @@ private:
     void doInternalDraw() const override;
 
     void endGame();
-    void spawnLaser();
+    void spawnLaser(jt::Vector2f const& pos, jt::Vector2f const& velocity);
     void checkLaserPlayerCollision();
 };
 
