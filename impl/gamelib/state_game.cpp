@@ -29,6 +29,9 @@ void StateGame::doInternalCreate()
     m_player = std::make_shared<Player>();
     add(m_player);
 
+    m_lasers = std::make_shared<jt::ObjectGroup<Laser>>();
+    add(m_lasers);
+
     m_vignette = std::make_shared<jt::Vignette>(GP::GetScreenSize());
     add(m_vignette);
     m_hud = std::make_shared<Hud>();
@@ -44,12 +47,7 @@ void StateGame::doInternalUpdate(float const elapsed)
         m_world->step(elapsed, GP::PhysicVelocityIterations(), GP::PhysicPositionIterations());
         // update game logic here
         if (getGame()->input().keyboard()->justPressed(jt::KeyCode::A)) {
-            m_scoreP1++;
-            m_hud->getObserverScoreP1()->notify(m_scoreP1);
-        }
-        if (getGame()->input().keyboard()->justPressed(jt::KeyCode::D)) {
-            m_scoreP2++;
-            m_hud->getObserverScoreP2()->notify(m_scoreP2);
+            spawnLaser();
         }
     }
 
@@ -77,3 +75,10 @@ void StateGame::endGame()
     getGame()->stateManager().switchState(std::make_shared<StateMenu>());
 }
 std::string StateGame::getName() const { return "Game"; }
+
+void StateGame::spawnLaser()
+{
+    auto l = std::make_shared<Laser>(jt::Vector2f { 300.0f, 0 }, jt::Vector2f { 0, 100.0f });
+    add(l);
+    m_lasers->push_back(l);
+}

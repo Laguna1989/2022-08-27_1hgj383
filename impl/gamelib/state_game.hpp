@@ -3,6 +3,8 @@
 
 #include <box2dwrapper/box2d_world_interface.hpp>
 #include <game_state.hpp>
+#include <laser.hpp>
+#include <object_group.hpp>
 #include <player.hpp>
 #include <memory>
 #include <vector>
@@ -28,6 +30,8 @@ private:
 
     std::shared_ptr<Player> m_player;
 
+    std::shared_ptr<jt::ObjectGroup<Laser>> m_lasers;
+
     bool m_running { true };
     bool m_hasEnded { false };
 
@@ -39,6 +43,7 @@ private:
     void doInternalDraw() const override;
 
     void endGame();
+    void spawnLaser();
 };
 
 #endif
