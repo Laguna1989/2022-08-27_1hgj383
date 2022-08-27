@@ -19,6 +19,9 @@ private:
 
     float m_shotTimer { 3.0f };
 
+    float m_rand1 { 1.0f };
+    float m_rand2 { 0.0f };
+
     void doCreate() override;
     void doUpdate(float const elapsed) override;
     void doDraw() const override;

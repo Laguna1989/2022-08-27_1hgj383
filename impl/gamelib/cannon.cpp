@@ -1,4 +1,5 @@
 #include "cannon.hpp"
+#include "math_helper.hpp"
 #include <game_properties.hpp>
 #include <random/random.hpp>
 
@@ -34,6 +35,9 @@ void Cannon::doCreate()
         m_shape->setPosition(jt::Vector2f { GP::GetScreenSize().x - 6.0f,
             jt::Random::getFloat(margin, GP::GetScreenSize().y - margin) });
     }
+
+    m_rand1 = jt::Random::getFloat(0.9f, 1.1f);
+    m_rand2 = jt::Random::getFloat(0.1f, 5.0f);
 }
 
 void Cannon::doUpdate(float const elapsed)
@@ -46,8 +50,27 @@ void Cannon::doUpdate(float const elapsed)
         m_shape->flicker(shotPreFlickerTimer);
     }
 
+    auto pos = m_shape->getPosition();
+
+    auto moveDir = jt::MathHelper::rotateBy(m_shotVelocity, 90.0f);
+    auto const offset = sin(getAge() * 1.5f * m_rand1 + m_rand2) * 0.17f * moveDir * elapsed;
+    auto newPos = pos + offset;
+    float const margin { 10.0f };
+
+    if (newPos.x < margin) {
+        newPos.x = margin;
+    } else if (newPos.x >= GP::GetScreenSize().x - margin) {
+        newPos.x = GP::GetScreenSize().x - margin;
+    }
+    if (newPos.y < margin) {
+        newPos.y = margin;
+    } else if (newPos.y >= GP::GetScreenSize().y - margin) {
+        newPos.y = GP::GetScreenSize().y - margin;
+    }
+    m_shape->setPosition(newPos);
+
     if (m_shotTimer <= 0.0f) {
-        m_shotTimer = GP::CannonFireTimer();
+        m_shotTimer = GP::CannonFireTimer() + jt::Random::getFloat(-1.0f, 1.0f);
         if (m_shotCallback) {
             m_shotCallback(m_shape->getPosition(), m_shotVelocity);
         }
