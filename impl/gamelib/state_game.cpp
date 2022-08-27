@@ -94,7 +94,9 @@ void StateGame::endGame()
     m_hasEnded = true;
     m_running = false;
 
-    getGame()->stateManager().switchState(std::make_shared<StateMenu>());
+    auto menu = std::make_shared<StateMenu>();
+    menu->setScore(m_timer);
+    getGame()->stateManager().switchState(menu);
 }
 std::string StateGame::getName() const { return "Game"; }
 

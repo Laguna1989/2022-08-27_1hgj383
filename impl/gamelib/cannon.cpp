@@ -38,7 +38,7 @@ void Cannon::doCreate()
 
     m_shape->setColor(GP::getPalette().getColor(3));
 
-    m_rand1 = jt::Random::getFloat(0.9f, 1.1f);
+    m_rand1 = jt::Random::getFloat(0.8f, 1.2f);
     m_rand2 = jt::Random::getFloat(0.1f, 5.0f);
 }
 

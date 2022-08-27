@@ -10,7 +10,7 @@ class GP {
 public:
     GP() = delete;
 
-    static std::string GameName() { return "MyAwesomeGame"; }
+    static std::string GameName() { return "Lasergrid"; }
     static std::string AuthorName() { return "Laguna_999"; }
     static std::string JamName() { return "1hgj383"; }
     static std::string JamDate() { return "2022-08-27"; }
@@ -29,7 +29,7 @@ public:
     static int PhysicVelocityIterations();
     static int PhysicPositionIterations();
     static jt::Vector2f PlayerSize();
-    static float const ShotVelocity() { return 150.0f; };
+    static float const ShotVelocity() { return 175.0f; };
     static float CannonFireTimer();
     static float CannonSpawnInterval();
 };
